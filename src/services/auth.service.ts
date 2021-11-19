@@ -59,7 +59,7 @@ export class AuthService{
     }
 
     SignUp = async (request: Request, response: Response) => {
-        const { email, password } = request.body;
+        const { email, password, firstName, lastName } = request.body;
         try {
             const user = await User.create({ email, password });
             const token = createToken(user._id);
