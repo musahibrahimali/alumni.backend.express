@@ -20,10 +20,7 @@ const handleErrors = (error: any) => {
 
     // validation errors
     if (error.message.includes('user validation failed')) {
-        Object.values((error.errors).forEach((error : any) => {
-            // @ts-ignore
-            errors[error.properties.path] = error.properties.message;
-        }));
+        errors.email = "Email in use by another user";
     }
 
     if (error.message === 'user not found') {
@@ -45,13 +42,16 @@ const createToken = (id: number | string) => {
 
 export class AuthService{
     SignIn = async (request: Request, response: Response) => {
-        const {email, password} = request.body;
+        const {email} = request.body;
+        const pass = request.body.password;
         try {
             // @ts-ignore
-            const user = await User.login(email, password);
+            const user = await User.login(email, pass);
             const token = createToken(user._id);
+            const {password, ...userWithoutPassword} = user;
+            console.log(userWithoutPassword);
             response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-            return response.status(200).json({ userId: user._id });
+            return response.status(200).json({ userId: user._id, user: userWithoutPassword });
         } catch (error) {
             const errors = handleErrors(error);
             return response.status(400).json({ errors });
@@ -59,12 +59,19 @@ export class AuthService{
     }
 
     SignUp = async (request: Request, response: Response) => {
-        const { email, password, firstName, lastName } = request.body;
+        const { email, firstName, lastName } = request.body;
+        const pass = request.body.password;
         try {
-            const user = await User.create({ email, password });
+            const user = await User.create({ 
+                email:email, 
+                password:pass, 
+                firstName:firstName,
+                lastName:lastName
+            });
             const token = createToken(user._id);
+            const {password, ...userWithoutPassword} = user;
             response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-            return response.status(200).json({ userId: user._id });
+            return response.status(200).json({ userId: user._id, user: userWithoutPassword });
         } catch (error) {
             const errors = handleErrors(error);
             return response.status(400).json({ errors });

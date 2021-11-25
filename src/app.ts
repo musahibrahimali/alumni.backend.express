@@ -14,6 +14,8 @@ import {connectDatabase} from './database/database';
 // create an application
 const app:Application = express();
 
+app.set("trust proxy", 1);
+
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
