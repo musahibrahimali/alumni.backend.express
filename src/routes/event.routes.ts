@@ -8,6 +8,14 @@ router.post('/events', (request:Request, response:Response) => {
     return eventsController.createEvent(request, response);
 });
 
+router.post('/events:id', (request:Request, response:Response) => {
+    return eventsController.updateEvent(request, response);
+});
+
+router.post('/events:id', (request:Request, response:Response) => {
+    return eventsController.deleteEvent(request, response);
+});
+
 router.get('/events', (request:Request, response:Response) => {
     return eventsController.getAllEvents(request, response);
 });

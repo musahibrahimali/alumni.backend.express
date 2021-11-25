@@ -7,5 +7,5 @@ export interface JobInterface extends Document{
     readonly snippet: string;
     readonly details: string;
     readonly date: string;
-    readonly logo: string;
+    readonly logo: string | any;
 }

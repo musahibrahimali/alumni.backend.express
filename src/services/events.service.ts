@@ -23,27 +23,6 @@ export class EventsService{
         }
     }
 
-    updateEvent = async (request:Request, response:Response) => {
-        const {id} = request.body;
-        try{
-            const event = EventModel.findByIdAndUpdate({_id : id},{});
-            return response.status(400).json({event: event });
-        }catch(error){
-            return response.status(400).json({ error: error });
-        }
-    }
-
-    deleteEvent = async (request:Request, response:Response) => {
-        const {id} = request.body;
-        try{
-            await EventModel.deleteOne({_id : id});
-            return response.status(200).json({ message: "Deleted Successfully" });
-
-        }catch(error){
-            return response.status(400).json({ error: error });
-        }
-    }
-
     getEventByTitle = async (request:Request, response:Response) => {
         const {title} = request.body;
         const event = await EventModel.findOne({ title : title });
@@ -64,6 +43,27 @@ export class EventsService{
             return response.status(200).json({ eventId : event._id });
         }catch(error){
             return response.status(400).json({ error });
+        }
+    }
+
+    updateEvent = async (request:Request, response:Response) => {
+        const {id} = request.body;
+        try{
+            const event = EventModel.findByIdAndUpdate({_id : id},{});
+            return response.status(400).json({event: event });
+        }catch(error){
+            return response.status(400).json({ error: error });
+        }
+    }
+
+    deleteEvent = async (request:Request, response:Response) => {
+        const {id} = request.body;
+        try{
+            await EventModel.deleteOne({_id : id});
+            return response.status(200).json({ message: "Deleted Successfully" });
+
+        }catch(error){
+            return response.status(400).json({ error: error });
         }
     }
 }

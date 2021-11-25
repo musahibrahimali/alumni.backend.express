@@ -59,19 +59,30 @@ export class AuthService{
     }
 
     SignUp = async (request: Request, response: Response) => {
-        const { email, firstName, lastName } = request.body;
-        const pass = request.body.password;
+        const { email, firstName, lastName,password } = request.body;
         try {
             const user = await User.create({ 
-                email:email, 
-                password:pass, 
-                firstName:firstName,
-                lastName:lastName
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName
             });
             const token = createToken(user._id);
-            const {password, ...userWithoutPassword} = user;
+            const userEmail = user.email;
+            const userFirstName = user.firstName;
+            const userLastName = user.lastName;
+            const userId = user._id;
+            const createdAt = user.createdAt;
+            const updatedAt = user.updatedAt;
             response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-            return response.status(200).json({ userId: user._id, user: userWithoutPassword });
+            return response.status(200).json({
+                userId: userId,
+                email: userEmail,
+                firstName: userFirstName,
+                lastName: userLastName,
+                createdAt: createdAt,
+                updatedAt: updatedAt
+            });
         } catch (error) {
             const errors = handleErrors(error);
             return response.status(400).json({ errors });

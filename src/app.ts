@@ -6,7 +6,7 @@ import createHttpError from "http-errors";
 import helmet from "helmet";
 
 // util imports
-import {appRoutes,authRoutes} from './routes/routes';
+import {appRoutes,authRoutes, eventRoutes,jobRoutes} from './routes/routes';
 import {Host, Port} from "./config/config";
 import {corsOptions} from "./config/cors";
 import {connectDatabase} from './database/database';
@@ -30,6 +30,8 @@ connectDatabase();
 // Routes
 app.use(appRoutes);
 app.use(authRoutes);
+app.use(eventRoutes);
+app.use(jobRoutes);
 
 // catch 404 and forward to error handler
 app.use((request:Request, response:Response, next:NextFunction) => {

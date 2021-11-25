@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { EventsService } from '../services/events.service';
+import { EventsService } from '../services/services';
 
 const eventsService = new EventsService();
 
@@ -20,6 +20,14 @@ export class EventsController{
 
     public createEvent(request:Request, response:Response){
         return eventsService.createEvent(request, response);
+    }
+
+    public updateEvent(request:Request, response:Response){
+        return eventsService.updateEvent(request, response);
+    }
+
+    public deleteEvent(request:Request, response:Response){
+        return eventsService.deleteEvent(request, response);
     }
 
 }

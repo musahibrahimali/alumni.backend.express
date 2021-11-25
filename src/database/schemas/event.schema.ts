@@ -6,14 +6,6 @@ const EventSchema = new Schema({
         type: String,
         required: [true, "This field is required"],
     },
-    url:{
-        type: String,
-        required: [true, "This field is required"],
-    },
-    snippet:{
-        type: String,
-        required: [true, "This field is required"],
-    },
     details:{
         type: String,
         required: [true, "This field is required"],
@@ -22,7 +14,7 @@ const EventSchema = new Schema({
         type: String,
         required: [true, "This field is required"],
     },
-    logo:[ImageSchema],
+    image:[ImageSchema],
 },{
     timestamps: true,
 });
