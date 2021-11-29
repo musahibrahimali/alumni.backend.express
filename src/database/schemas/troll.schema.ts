@@ -1,24 +1,24 @@
 import { Schema } from "mongoose";
-import ImageSchema from './image.schema';
+import {ImageSchema} from './schemas';
 
-const EventSchema = new Schema({
-    title: {
-        type: String,
-        required: [true, "This field is required"],
-    },
+const TrollSchema = new Schema({
     details:{
         type: String,
         required: [true, "This field is required"],
     },
+
     snippet:{
         type: String,
     },
+
+    image:[ImageSchema],
+
     date: {
         type: String,
     },
-    image: [ImageSchema],
+
 },{
     timestamps: true,
 });
 
-export default EventSchema;
+export default TrollSchema;

@@ -14,6 +14,7 @@ import {
     eventRoutes, 
     jobRoutes, 
     blogRoutes,
+    trollRoutes,
 } from './routes/routes';
 import {Host, Port} from "./config/config";
 import {corsOptions} from "./config/cors";
@@ -44,6 +45,7 @@ app.use(authRoutes);
 app.use(eventRoutes);
 app.use(jobRoutes);
 app.use(blogRoutes);
+app.use(trollRoutes);
 
 // catch 404 and forward to error handler
 app.use((request:Request, response:Response, next:NextFunction) => {
@@ -66,8 +68,8 @@ const application: Application | any = server.listen(Port, Host, () => {
     console.log(`Server Ready and Listening at ${address} on port ${port} -> (http://localhost:${port})`);
 });
 
-// socket io
 
+// socket io
 io.on('connection', (socket: socketio.Socket) => {
     console.log('connection');
     socket.emit('status', 'Hello from Socket.io');

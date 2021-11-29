@@ -3,3 +3,4 @@ export {default as authRoutes} from './auth.routes';
 export {default as eventRoutes} from './event.routes';
 export {default as jobRoutes} from './job.routes';
 export {default as blogRoutes} from './blog.routes';
+export {default as trollRoutes} from './troll.routes';

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BlogModel } from '../database/models/models';
+import { BlogModel } from '../database/database';
 
 
 export class BlogService{
@@ -30,16 +30,17 @@ export class BlogService{
     }
 
     createBlog = async (request: Request, response:Response) => {
-        const { title, category, snippet, details, date, image, comments } = request.body;
+        const { title, category, details, image } = request.body;
+        const snippet = details.substring(0, 100);
         try{
             const blog = new BlogModel({
                 title : title,
                 category : category,
                 snippet : snippet,
                 details : details,
-                date : date,
+                date : new Date(),
                 image : image,
-                comments : comments,
+                comment: [],
             });
             const newBlog = await blog.save();
             return response.status(200).json({ blogId: newBlog._id });

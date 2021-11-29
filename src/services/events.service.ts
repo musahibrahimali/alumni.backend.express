@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { EventModel } from "../database/models/event.model";
+import { EventModel } from "../database/database";
 
 export class EventsService{
     constructor(){}
@@ -30,15 +30,15 @@ export class EventsService{
     }
 
     createEvent = async (request:Request, response:Response) => {
-        const { title, url, snippet, details, date, logo } = request.body;
+        const { title, details, image } = request.body;
+        const snippet = details.substring(0, 100);
         try{
             const event = new EventModel({
                 title : title,
-                url : url,
                 snippet : snippet,
                 details : details,
-                date : date,
-                logo : logo,
+                date : new Date(),
+                image : image,
             });
             const newEvent = await event.save();
             return response.status(200).json({ eventId : newEvent._id });
@@ -51,7 +51,7 @@ export class EventsService{
         const {id} = request.body;
         try{
             const event = EventModel.findByIdAndUpdate({_id : id},{});
-            return response.status(400).json({event: event });
+            return response.status(200).json({event: event });
         }catch(error){
             return response.status(400).json({ error: error });
         }

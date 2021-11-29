@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import validator from "validator";
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, "Please enter a valid password"],
@@ -26,4 +26,4 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export default userSchema;
+export default UserSchema;

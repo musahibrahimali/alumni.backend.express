@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import ImageSchema from './image.schema';
+import {ImageSchema} from './schemas';
 
 const JobSchema = new Schema({
     title: {

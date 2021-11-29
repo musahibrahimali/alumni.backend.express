@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {errorType} from "../types/errors.type";
 import jwt from "jsonwebtoken";
 import {JWT_SECRET,JWT_EXPIRES_IN} from '../config/keys';
-import {User} from "../database/database";
+import {UserModel} from "../database/database";
 
 const handleErrors = (error: any) => {
     // error message to send to user
@@ -42,54 +42,53 @@ const createToken = (id: number | string) => {
 
 export class AuthService{
     SignIn = async (request: Request, response: Response) => {
-        const {email} = request.body;
-        const pass = request.body.password;
+        const {email, password} = request.body;
         try {
             // @ts-ignore
-            const user = await User.login(email, pass);
+            const user = await UserModel.login(email, password);
             const token = createToken(user._id);
-            const {password, ...userWithoutPassword} = user;
-            console.log(userWithoutPassword);
             response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-            return response.status(200).json({ userId: user._id, user: userWithoutPassword });
+            return response.status(200).json({
+                userId: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
+            });
         } catch (error) {
             const errors = handleErrors(error);
-            return response.status(400).json({ errors });
+            return response.status(400).json({ errors : errors });
         }
     }
 
     SignUp = async (request: Request, response: Response) => {
         const { email, firstName, lastName,password } = request.body;
         try {
-            const user = await User.create({ 
+            const user = new UserModel({ 
                 email: email,
                 password: password,
                 firstName: firstName,
                 lastName: lastName
             });
+            const newUser = await user.save();
             const token = createToken(user._id);
-            const userEmail = user.email;
-            const userFirstName = user.firstName;
-            const userLastName = user.lastName;
-            const userId = user._id;
-            const createdAt = user.createdAt;
-            const updatedAt = user.updatedAt;
             response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
             return response.status(200).json({
-                userId: userId,
-                email: userEmail,
-                firstName: userFirstName,
-                lastName: userLastName,
-                createdAt: createdAt,
-                updatedAt: updatedAt
+                userId: newUser._id,
+                email: newUser.email,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                createdAt: newUser.createdAt,
+                updatedAt: newUser.updatedAt
             });
         } catch (error) {
             const errors = handleErrors(error);
-            return response.status(400).json({ errors });
+            return response.status(400).json({ errors : errors });
         }
     }
 
-    public LogOut(request: Request, response: Response){
+    LogOut = (request: Request, response: Response) => {
         response.cookie('jwt', '', { maxAge: 1 });
         response.redirect('/');
     }

@@ -1,19 +1,17 @@
 import mongoose from 'mongoose';
-import userSchema from "../schemas/user.schema";
+import UserSchema from '../schemas/user.schema';
 import bcrypt from 'bcrypt';
-import {UserInterface} from "../../interface/user.interface";
-
-// hash password
+import {UserInterface} from "../../interface/interfaces";
 
 // fire a function before saving to database (hash password)
-userSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function (next) {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
 
-userSchema.statics.login = async function (email:string, password:string):Promise<UserInterface> {
+UserSchema.statics.login = async function (email:string, password:string):Promise<UserInterface> {
     const user = await this.findOne({ email });
     if (!user) {
         throw new Error('user not found');
@@ -25,4 +23,4 @@ userSchema.statics.login = async function (email:string, password:string):Promis
     return user;
 }
 
-export const User = mongoose.model("user", userSchema);
+export const UserModel = mongoose.model("user", UserSchema);
