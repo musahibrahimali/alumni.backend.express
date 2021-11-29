@@ -4,25 +4,36 @@ import cookieParser from "cookie-parser";
 import cors from 'cors';
 import createHttpError from "http-errors";
 import helmet from "helmet";
+import * as http from 'http';
+import * as socketio from 'socket.io';
 
 // util imports
-import {appRoutes,authRoutes, eventRoutes,jobRoutes} from './routes/routes';
+import {
+    appRoutes, 
+    authRoutes, 
+    eventRoutes, 
+    jobRoutes, 
+    blogRoutes,
+} from './routes/routes';
 import {Host, Port} from "./config/config";
 import {corsOptions} from "./config/cors";
 import {connectDatabase} from './database/database';
 
 // create an application
-const app:Application = express();
+const app:Application = express(); // create express app
+const server: http.Server = http.createServer(app); // create http server
+const io: socketio.Server = new socketio.Server(); // create io server
+io.attach(server); // attach socket io to the server
 
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); // set trust proxy to 1
 
 // middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(logger('dev'));
-app.use(cookieParser());
-app.use(cors(corsOptions));
-app.use(helmet());
+app.use(express.json()); // format json data
+app.use(express.urlencoded({ extended: true })); // add url encoding 
+app.use(logger('dev')); // log details for development
+app.use(cookieParser()); // mmanaging cookies
+app.use(cors(corsOptions)); // adding cross framework access
+app.use(helmet()); // add some basic layer security to the app
 
 /* connect to database */
 connectDatabase();
@@ -32,6 +43,7 @@ app.use(appRoutes);
 app.use(authRoutes);
 app.use(eventRoutes);
 app.use(jobRoutes);
+app.use(blogRoutes);
 
 // catch 404 and forward to error handler
 app.use((request:Request, response:Response, next:NextFunction) => {
@@ -49,7 +61,19 @@ app.use((err:Errback | any, request:Request, response:Response, next: NextFuncti
 });
 
 // Start server
-const server: Application | any = app.listen(Port, Host, () => {
-    const {port, address} = server.address();
-    console.log(`Server Listening at ${address} on port ${port}`);
+const application: Application | any = server.listen(Port, Host, () => {
+    const {port, address} = application.address();
+    console.log(`Server Ready and Listening at ${address} on port ${port} -> (http://localhost:${port})`);
 });
+
+// socket io
+
+io.on('connection', (socket: socketio.Socket) => {
+    console.log('connection');
+    socket.emit('status', 'Hello from Socket.io');
+
+    socket.on('disconnect', () => {
+        console.log('client disconnected');
+    });
+});
+

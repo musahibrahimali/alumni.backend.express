@@ -10,7 +10,9 @@
     "build": "tsc -p ."
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.0",
+    "@types/colors": "^1.2.1",
     "@types/cookie-parser": "^1.4.2",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
@@ -19,6 +21,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.11.7",
+    "@types/socket.io": "^3.0.2",
     "@types/validator": "^13.7.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
@@ -26,6 +29,7 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -36,6 +40,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.13",
     "morgan": "^1.10.0",
+    "socket.io": "^4.4.0",
     "validator": "^13.7.0"
   }
 }

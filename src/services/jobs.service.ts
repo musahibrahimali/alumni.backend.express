@@ -32,7 +32,7 @@ export class JobsService{
     createJob = async (request:Request, response:Response) => {
         const { title, url, snippet, details, date, logo } = request.body;
         try{
-            const job = await JobModel.create({
+            const job = new JobModel({
                 title : title,
                 url : url,
                 snippet : snippet,
@@ -40,7 +40,8 @@ export class JobsService{
                 date : date,
                 logo : logo,
             });
-            return response.status(200).json({ eventId : job._id });
+            const newJob = await job.save();
+            return response.status(200).json({ eventId : newJob._id });
         }catch(error){
             return response.status(400).json({ error });
         }

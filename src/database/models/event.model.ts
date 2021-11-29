@@ -1,4 +1,4 @@
 import mongoose from "mongoose";
-import EventSchema from '../schemas/event.schema';
+import {EventSchema} from '../schemas/schemas';
 
-export const EventModel = mongoose.model("events", EventSchema);
+export const EventModel = mongoose.model("event", EventSchema);

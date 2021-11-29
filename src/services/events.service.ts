@@ -32,7 +32,7 @@ export class EventsService{
     createEvent = async (request:Request, response:Response) => {
         const { title, url, snippet, details, date, logo } = request.body;
         try{
-            const event = await EventModel.create({
+            const event = new EventModel({
                 title : title,
                 url : url,
                 snippet : snippet,
@@ -40,7 +40,8 @@ export class EventsService{
                 date : date,
                 logo : logo,
             });
-            return response.status(200).json({ eventId : event._id });
+            const newEvent = await event.save();
+            return response.status(200).json({ eventId : newEvent._id });
         }catch(error){
             return response.status(400).json({ error });
         }
