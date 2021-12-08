@@ -1,13 +1,15 @@
 import jwt from "jsonwebtoken";
 import {JWT_SECRET} from "./config/keys";
 
-const privateKey = JWT_SECRET;
+const privateKey = JWT_SECRET; // secret key
 
-export const createToken(object: Object, options?: jwt.SignOptions | undefined) {
+// create web token
+export const createToken = (object: Object, options?: jwt.SignOptions | undefined) => {
   return jwt.sign(object, privateKey, options);
 }
 
-export function decode(token: string) {
+// decode session token
+export const decodeToken = (token: string) => {
   try {
     const decoded = jwt.verify(token, privateKey);
     return { valid: true, expired: false, decoded };
