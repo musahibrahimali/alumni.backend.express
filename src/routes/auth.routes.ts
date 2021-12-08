@@ -18,7 +18,7 @@ router.post("/signup", (request:Request, response:Response) => {
 // facebook login
 router.post(
     "/facebook", 
-    passport.authenticate("facebookToken", {
+    passport.authenticate("facebook", {
         failureRedirect: "/login",
         failureFlash: true,
         failureMessage: "Facebook login failed",
@@ -32,7 +32,7 @@ router.post(
 // google login
 router.post(
     "/google",
-    passport.authenticate("googleToken", {
+    passport.authenticate("google", {
         failureRedirect: "/login",
         failureFlash: true,
         failureMessage: "Google login failed",

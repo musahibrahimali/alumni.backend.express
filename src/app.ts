@@ -1,6 +1,6 @@
 import express, {Application,Response, Request, Errback, NextFunction} from 'express';
 import passport from 'passport';
-import './passport/passport-setup';
+import './passport/passport';
 import logger from 'morgan';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
