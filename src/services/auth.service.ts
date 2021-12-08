@@ -88,6 +88,17 @@ export class AuthService{
         }
     }
 
+    // facebook login
+    FacebookLogin = async (request: Request, response: Response) => {
+        response.redirect('/');
+    }
+
+    // google login
+    GoogleLogin = async (request: Request, response: Response) => {
+        response.redirect('/');
+    }
+
+    // log out
     LogOut = (request: Request, response: Response) => {
         response.cookie('jwt', '', { maxAge: 1 });
         response.redirect('/');

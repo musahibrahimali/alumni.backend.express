@@ -1,4 +1,5 @@
 import express, {Application,Response, Request, Errback, NextFunction} from 'express';
+import passport from 'passport';
 import logger from 'morgan';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
@@ -35,6 +36,8 @@ app.use(logger('dev')); // log details for development
 app.use(cookieParser()); // mmanaging cookies
 app.use(cors(corsOptions)); // adding cross framework access
 app.use(helmet()); // add some basic layer security to the app
+app.use(passport.initialize()); // initialize passport
+app.use(passport.session()); // manage sessions
 
 /* connect to database */
 connectDatabase();
