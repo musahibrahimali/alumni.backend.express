@@ -1,6 +1,7 @@
 import express, {Application,Response, Request, Errback, NextFunction} from 'express';
+import expressSession from 'express-session';
+import methodOverride from 'method-override';
 import passport from 'passport';
-import './passport/passport';
 import logger from 'morgan';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
@@ -8,6 +9,8 @@ import createHttpError from "http-errors";
 import helmet from "helmet";
 import * as http from 'http';
 import * as socketio from 'socket.io';
+import MongoStore from 'connect-mongo';
+import {DB_URI} from './config/config';
 
 // util imports
 import {
@@ -21,6 +24,7 @@ import {
 import {Host, Port} from "./config/config";
 import {corsOptions} from "./config/cors";
 import {connectDatabase} from './database/database';
+import { initPassport } from './passport/passport';
 
 // create an application
 const app:Application = express(); // create express app
@@ -30,6 +34,9 @@ io.attach(server); // attach socket io to the server
 
 app.set("trust proxy", 1); // set trust proxy to 1
 
+// passport initial set up
+initPassport(passport);
+
 // middlewares
 app.use(express.json()); // format json data
 app.use(express.urlencoded({ extended: true })); // add url encoding 
@@ -37,11 +44,24 @@ app.use(logger('dev')); // log details for development
 app.use(cookieParser()); // mmanaging cookies
 app.use(cors(corsOptions)); // adding cross framework access
 app.use(helmet()); // add some basic layer security to the app
-app.use(passport.initialize()); // initialize passport
-app.use(passport.session()); // manage sessions
 
 /* connect to database */
 connectDatabase();
+
+// session and passport
+app.use(expressSession({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: DB_URI,
+        crypto: {
+            secret: 'squirrel'
+        }
+    }),
+}));
+app.use(passport.initialize()); // initialize passport
+app.use(passport.session()); // manage sessions
 
 // Routes
 app.use(appRoutes);
@@ -50,6 +70,24 @@ app.use(eventRoutes);
 app.use(jobRoutes);
 app.use(blogRoutes);
 app.use(trollRoutes);
+
+// Method override
+app.use(
+    methodOverride((req, res) => {
+        if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+        // look in urlencoded POST bodies and delete it
+        let method = req.body._method
+        delete req.body._method
+        return method
+        }
+    })
+);
+
+// Set global var
+app.use((request:Request, response:Response, next:NextFunction) => {
+    response.locals.user = request.user || null;
+    next();
+});
 
 // catch 404 and forward to error handler
 app.use((request:Request, response:Response, next:NextFunction) => {
@@ -71,7 +109,6 @@ const application: Application | any = server.listen(Port, Host, () => {
     const {port, address} = application.address();
     console.log(`Server Ready and Listening at ${address} on port ${port} -> (http://localhost:${port})`);
 });
-
 
 // socket io
 io.on('connection', (socket: socketio.Socket) => {

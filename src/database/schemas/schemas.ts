@@ -5,3 +5,4 @@ export {default as ImageSchema} from './image.schema';
 export {default as BlogSchema} from './blog.schema';
 export {default as CommentSchema} from './comment.schema';
 export {default as TrollSchema} from './troll.schema';
+export {default as SocialSchema} from './social.schema';

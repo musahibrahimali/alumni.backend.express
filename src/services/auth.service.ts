@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import {JWT_SECRET,JWT_EXPIRES_IN} from '../config/keys';
 import {UserModel} from "../database/database";
 
+// client url
+const CLIENT_URL = "http://localhost:3000/";
+
 const handleErrors = (error: any) => {
     // error message to send to user
     let errors: errorType = {
@@ -51,10 +54,9 @@ export class AuthService{
             return response.status(200).json({
                 userId: user._id,
                 email: user.email,
+                displayName: user.displayName,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt
             });
         } catch (error) {
             const errors = handleErrors(error);
@@ -68,6 +70,7 @@ export class AuthService{
             const user = new UserModel({ 
                 email: email,
                 password: password,
+                displayName: firstName,
                 firstName: firstName,
                 lastName: lastName
             });
@@ -77,10 +80,9 @@ export class AuthService{
             return response.status(200).json({
                 userId: newUser._id,
                 email: newUser.email,
+                displayName: newUser.displayName,
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
-                createdAt: newUser.createdAt,
-                updatedAt: newUser.updatedAt
             });
         } catch (error) {
             const errors = handleErrors(error);
@@ -90,12 +92,18 @@ export class AuthService{
 
     // facebook login
     FacebookLogin = async (request: Request, response: Response) => {
-        response.redirect('/');
+        const id = "105103784242797054131";
+        const token = createToken(id);
+        response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
+        return response.redirect(CLIENT_URL);
     }
 
     // google login
     GoogleLogin = async (request: Request, response: Response) => {
-        response.redirect('/');
+        const id = "105103784242797054131";
+        const token = createToken(id);
+        response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
+        return response.redirect(CLIENT_URL);
     }
 
     // log out

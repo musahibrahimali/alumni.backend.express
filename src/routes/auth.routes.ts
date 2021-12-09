@@ -16,32 +16,53 @@ router.post("/signup", (request:Request, response:Response) => {
 });
 
 // facebook login
-router.post(
-    "/facebook", 
+router.get(
+    "/google",
     passport.authenticate("facebook", {
-        failureRedirect: "/login",
+        scope: ["public_profile", "email"],
+        session: false,
+    })
+);
+
+// @desc    Google auth callback
+// @route   GET /auth/google/callback
+router.get(
+    '/facebook/callback',
+    passport.authenticate('facebook', { 
+        failureRedirect: '/',
         failureFlash: true,
-        failureMessage: "Facebook login failed",
-        session: true
-    }), 
+        failureMessage: "Google login failed",
+        session: false,
+    }),
     (request:Request, response:Response) => {
         return authController.facebookLogin(request, response);
     }
-);
+)
 
 // google login
-router.post(
+router.get(
     "/google",
     passport.authenticate("google", {
-        failureRedirect: "/login",
+        scope: ["profile", "email"],
+        session: false,
+    })
+);
+
+// @desc    Google auth callback
+// @route   GET /auth/google/callback
+router.get(
+    '/google/callback',
+    passport.authenticate('google', { 
+        failureRedirect: '/',
         failureFlash: true,
         failureMessage: "Google login failed",
-        session: true
+        session: false,
     }),
     (request:Request, response:Response) => {
         return authController.googleLogin(request, response);
     }
-);
+)
+
 
 // log out user
 router.get("/logout", (request:Request, response:Response) => {

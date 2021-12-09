@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from '../config/keys';
-import {UserModel} from "../database/models/models";
+import {UserModel,SocialUserModel} from "../database/models/models";
 
 export const requireAuth = (request:Request, response:Response, next:NextFunction) => {
     const token = request.cookies.jwt;
@@ -35,7 +35,13 @@ export const checkUser = (request:Request, response:Response, next:NextFunction)
             } else {
                 // @ts-ignore
                 request.decodedToken = decodedToken;
-                response.locals.user = await UserModel.findById(decodedToken.id);
+                const user = await UserModel.findById(decodedToken.id);
+                const socialUser = await SocialUserModel.findById(decodedToken.id);
+                if(user != null){
+                    response.locals.user = user;
+                }else{
+                    response.locals.user = socialUser;
+                }
                 next();
             }
         });

@@ -1,11 +1,12 @@
 import { Request, Response, Router } from "express";
 import { JobsController } from "../controllers/controllers";
+import { checkUser, requireAuth } from "../middleware/auth.middleware";
 
 const router = Router();
 const jobsController = new JobsController();
 
 // create job
-router.post('/jobs', (request:Request, response:Response) => {
+router.post('/jobs', requireAuth, (request:Request, response:Response) => {
     return jobsController.createJob(request, response);
 });
 
@@ -26,12 +27,12 @@ router.get('/jobs:title', (request:Request, response:Response) => {
 });
 
 // update job
-router.put('/jobs:id', (request:Request, response:Response) => {
+router.put('/jobs:id', requireAuth, (request:Request, response:Response) => {
     return jobsController.updateJob(request, response);
 });
 
 // delete job
-router.delete('/jobs/:id', (request:Request, response:Response) => {
+router.delete('/jobs/:id', requireAuth, (request:Request, response:Response) => {
     return jobsController.deleteJob(request, response);
 });
 

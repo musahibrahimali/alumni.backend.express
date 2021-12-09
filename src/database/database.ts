@@ -3,7 +3,8 @@ export {
     EventModel,
     JobModel,
     BlogModel,
-    TrollModel,    
+    TrollModel, 
+    SocialUserModel
 } from './models/models';
 
 export {
