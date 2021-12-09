@@ -30,7 +30,7 @@ router.get(
 router.get(
     '/facebook/callback',
     passport.authenticate('facebook', { 
-        failureRedirect: '/',
+        failureRedirect: '/login',
         failureFlash: true,
         failureMessage: "Google login failed",
         session: false,
@@ -54,7 +54,7 @@ router.get(
 router.get(
     '/google/callback',
     passport.authenticate('google', { 
-        failureRedirect: '/',
+        failureRedirect: '/login',
         failureFlash: true,
         failureMessage: "Google login failed",
         session: false,
@@ -63,10 +63,6 @@ router.get(
         return authController.googleLogin(request, response);
     }
 );
-
-router.get('/social/callback', requireAuth, (request:Request, response:Response) => {
-    return authController.socialCallback(request, response);
-});
 
 // log out user
 router.get("/logout", (request:Request, response:Response) => {

@@ -101,26 +101,11 @@ export class AuthService{
 
     // google login
     GoogleLogin = async (request: Request, response: Response) => {
-        return response.redirect('/social/callback');
-    }
-
-    // social login callback
-    SocialCallback = async (request: Request, response: Response) => {
         // @ts-ignore
         const {_id} = request.user;
-        const user = await SocialUserModel.findById(_id);
-        const data = {
-            userId: user._id,
-            email: user.email,
-            displayName: user.displayName,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            image : user.image,
-            socialId: user.socialId,
-        }
         const token = createToken(_id);
         response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-        return response.status(200).json({data: data}).redirect(CLIENT_URL);
+        return response.redirect(CLIENT_URL);
     }
 
     // log out
