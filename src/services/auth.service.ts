@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {errorType} from "../types/errors.type";
 import jwt from "jsonwebtoken";
 import {JWT_SECRET,JWT_EXPIRES_IN} from '../config/keys';
-import {UserModel} from "../database/database";
+import {SocialUserModel, UserModel} from "../database/database";
 
 // client url
 const CLIENT_URL = "http://localhost:3000/";
@@ -51,13 +51,15 @@ export class AuthService{
             const user = await UserModel.login(email, password);
             const token = createToken(user._id);
             response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-            return response.status(200).json({
+            const data = {
                 userId: user._id,
                 email: user.email,
                 displayName: user.displayName,
                 firstName: user.firstName,
                 lastName: user.lastName,
-            });
+                image : user.image,
+            }
+            return response.status(200).json({ data: data });
         } catch (error) {
             const errors = handleErrors(error);
             return response.status(400).json({ errors : errors });
@@ -77,13 +79,15 @@ export class AuthService{
             const newUser = await user.save();
             const token = createToken(user._id);
             response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-            return response.status(200).json({
+            const data = {
                 userId: newUser._id,
                 email: newUser.email,
                 displayName: newUser.displayName,
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
-            });
+                image : newUser.image,
+            }
+            return response.status(200).json({data: data});
         } catch (error) {
             const errors = handleErrors(error);
             return response.status(400).json({ errors : errors });
@@ -92,18 +96,31 @@ export class AuthService{
 
     // facebook login
     FacebookLogin = async (request: Request, response: Response) => {
-        const id = "105103784242797054131";
-        const token = createToken(id);
-        response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-        return response.redirect(CLIENT_URL);
+        return response.redirect('/social/callback');
     }
 
     // google login
     GoogleLogin = async (request: Request, response: Response) => {
-        const id = "105103784242797054131";
-        const token = createToken(id);
+        return response.redirect('/social/callback');
+    }
+
+    // social login callback
+    SocialCallback = async (request: Request, response: Response) => {
+        // @ts-ignore
+        const {_id} = request.user;
+        const user = await SocialUserModel.findById(_id);
+        const data = {
+            userId: user._id,
+            email: user.email,
+            displayName: user.displayName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            image : user.image,
+            socialId: user.socialId,
+        }
+        const token = createToken(_id);
         response.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * JWT_EXPIRES_IN });
-        return response.redirect(CLIENT_URL);
+        return response.status(200).json({data: data}).redirect(CLIENT_URL);
     }
 
     // log out

@@ -1,6 +1,7 @@
 import {Request, Response, Router} from "express";
 import passport from "passport";
 import {AuthController} from "../controllers/controllers";
+import { requireAuth } from "../middleware/auth.middleware";
 
 const router = Router();
 const authController = new AuthController();
@@ -17,7 +18,7 @@ router.post("/signup", (request:Request, response:Response) => {
 
 // facebook login
 router.get(
-    "/google",
+    "/facebook",
     passport.authenticate("facebook", {
         scope: ["public_profile", "email"],
         session: false,
@@ -61,8 +62,11 @@ router.get(
     (request:Request, response:Response) => {
         return authController.googleLogin(request, response);
     }
-)
+);
 
+router.get('/social/callback', requireAuth, (request:Request, response:Response) => {
+    return authController.socialCallback(request, response);
+});
 
 // log out user
 router.get("/logout", (request:Request, response:Response) => {

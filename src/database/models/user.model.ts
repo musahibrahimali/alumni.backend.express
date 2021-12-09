@@ -6,9 +6,6 @@ import {SALT_ROUNDS} from '../../config/keys';
 
 // fire a function before saving to database (hash password)
 UserSchema.pre('save', async function (next) {
-    // only hash the password if it has been modified (or is new)
-    if (this.isModified("password")) return next();
-
     const saltRounds = SALT_ROUNDS;
     const salt = await bcrypt.genSalt(saltRounds);
     // replace teh text password witht he hashed password

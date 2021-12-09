@@ -2,11 +2,6 @@ import mongoose from 'mongoose';
 import validator from "validator";
 
 const UserSchema = new mongoose.Schema({
-    googleId: {
-        type: String,
-        required: false,
-        default: null
-    },
     email: {
         type: String,
         required: [true, "Please enter a valid password"],
