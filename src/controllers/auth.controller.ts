@@ -25,6 +25,10 @@ export class AuthController{
         return authService.GoogleLogin(request, response);
     }
 
+    public socialLogin(request:Request, response: Response){
+        return authService.SocialLogin(request, response);
+    }
+
     // log out
     public logOut(request:Request, response: Response){
         return authService.LogOut(request, response);

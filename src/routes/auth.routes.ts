@@ -3,6 +3,9 @@ import passport from "passport";
 import {AuthController} from "../controllers/controllers";
 import { requireAuth } from "../middleware/auth.middleware";
 
+// client url
+const CLIENT_URL = "http://localhost:3000/";
+
 const router = Router();
 const authController = new AuthController();
 
@@ -30,14 +33,12 @@ router.get(
 router.get(
     '/facebook/callback',
     passport.authenticate('facebook', { 
+        successRedirect: CLIENT_URL,
         failureRedirect: '/login',
         failureFlash: true,
         failureMessage: "Google login failed",
         session: false,
-    }),
-    (request:Request, response:Response) => {
-        return authController.facebookLogin(request, response);
-    }
+    })
 )
 
 // google login
@@ -54,15 +55,17 @@ router.get(
 router.get(
     '/google/callback',
     passport.authenticate('google', { 
+        successRedirect: CLIENT_URL,
         failureRedirect: '/login',
         failureFlash: true,
         failureMessage: "Google login failed",
         session: false,
-    }),
-    (request:Request, response:Response) => {
-        return authController.googleLogin(request, response);
-    }
+    })
 );
+
+router.get("/login/success", requireAuth, (request:Request, response:Response) => {
+    return authController.socialLogin(request, response);
+});
 
 // log out user
 router.get("/logout", (request:Request, response:Response) => {
