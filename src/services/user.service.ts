@@ -1,49 +1,10 @@
 import {Request, Response} from "express";
-import {errorType} from "../types/errors.type";
 import jwt from "jsonwebtoken";
 import {JWT_SECRET,JWT_EXPIRES_IN} from '../config/keys';
 import {SocialUserModel, UserModel} from "../database/database";
+import { CLIENT_URL, createToken, handleErrors } from "../utils/utils";
 
-// client url
-const CLIENT_URL = "http://localhost:3000/";
-
-const handleErrors = (error: any) => {
-    // error message to send to user
-    let errors: errorType = {
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-    }
-
-    // duplicate error code
-    if (error.code === 11000) {
-        errors.email = "The email is already in use by another account";
-    }
-
-    // validation errors
-    if (error.message.includes('user validation failed')) {
-        errors.email = "Email in use by another user";
-    }
-
-    if (error.message === 'user not found') {
-        errors.email = "No Account associated with this email";
-    }
-
-    if (error.message === 'incorrect password') {
-        errors.password = "Incorrect Password";
-    }
-
-    return errors;
-}
-
-const createToken = (id: number | string) => {
-    return jwt.sign({ id }, JWT_SECRET, {
-        expiresIn: JWT_EXPIRES_IN
-    });
-}
-
-export class AuthService{
+export class UserService{
     SignIn = async (request: Request, response: Response) => {
         const {email, password} = request.body;
         try {
@@ -67,7 +28,7 @@ export class AuthService{
     }
 
     SignUp = async (request: Request, response: Response) => {
-        const { email, firstName, lastName,password } = request.body;
+        const { email, firstName, lastName, password } = request.body;
         try {
             const user = new UserModel({ 
                 email: email,
@@ -150,11 +111,10 @@ export class AuthService{
             }
             return response.status(400).json({ data: data });
         }
-    }
+    }    
 
     // log out
     LogOut = (request: Request, response: Response) => {
-        // request.logout();
         response.cookie('jwt', '', { maxAge: 1 });
         response.redirect('/');
     }

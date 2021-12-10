@@ -11,7 +11,7 @@ export const requireAuth = (request:Request, response:Response, next:NextFunctio
         jwt.verify(token, JWT_SECRET, (error:any, decodedToken: number|any) => {
             if (error) {
                 // if the token is invalid, redirect to login
-                response.redirect('/login');
+                response.redirect('/');
             } else {
                 // @ts-ignore
                 request.decodedToken = decodedToken;
@@ -20,7 +20,7 @@ export const requireAuth = (request:Request, response:Response, next:NextFunctio
         });
     } else {
         // if no token, redirect to login
-        response.redirect('/login');
+        response.redirect('/');
     }
 }
 
@@ -48,5 +48,13 @@ export const checkUser = (request:Request, response:Response, next:NextFunction)
     } else {
         response.locals.user = null;
         next();
+    }
+}
+
+export const ensureAuth = (request:Request, response:Response, next:NextFunction) => {
+    if (request.isAuthenticated()) {
+        return next()
+    } else {
+        response.redirect('/')
     }
 }

@@ -9,4 +9,8 @@ router.get("/", (request:Request, response:Response) => {
     return appController.home_page(request, response);
 });
 
+router.get('/initialuser/:id', (request:Request, response:Response) => {
+    return appController.initial_user(request, response);
+});
+
 export default router;

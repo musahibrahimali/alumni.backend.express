@@ -1,6 +1,4 @@
 import express, {Application,Response, Request, Errback, NextFunction} from 'express';
-import expressSession from 'express-session';
-import methodOverride from 'method-override';
 import passport from 'passport';
 import logger from 'morgan';
 import cookieParser from "cookie-parser";
@@ -9,17 +7,16 @@ import createHttpError from "http-errors";
 import helmet from "helmet";
 import * as http from 'http';
 import * as socketio from 'socket.io';
-import MongoStore from 'connect-mongo';
-import {DB_URI} from './config/config';
 
 // util imports
 import {
     appRoutes, 
-    authRoutes, 
+    userRoutes, 
     eventRoutes, 
     jobRoutes, 
     blogRoutes,
     trollRoutes,
+    adminRoutes,
 } from './routes/routes';
 import {Host, Port} from "./config/config";
 import {corsOptions} from "./config/cors";
@@ -47,41 +44,17 @@ app.use(helmet()); // add some basic layer security to the app
 
 /* connect to database */
 connectDatabase();
-
-// session and passport
-app.use(expressSession({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: DB_URI,
-        crypto: {
-            secret: 'squirrel'
-        }
-    }),
-}));
-app.use(passport.initialize()); // initialize passport
-app.use(passport.session()); // manage sessions
+// initialize passport
+app.use(passport.initialize()); 
 
 // Routes
 app.use(appRoutes);
-app.use(authRoutes);
+app.use('/user', userRoutes);
 app.use(eventRoutes);
 app.use(jobRoutes);
 app.use(blogRoutes);
 app.use(trollRoutes);
-
-// Method override
-app.use(
-    methodOverride((req, res) => {
-        if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-        // look in urlencoded POST bodies and delete it
-        let method = req.body._method
-        delete req.body._method
-        return method
-        }
-    })
-);
+app.use('/admin', adminRoutes);
 
 // Set global var
 app.use((request:Request, response:Response, next:NextFunction) => {

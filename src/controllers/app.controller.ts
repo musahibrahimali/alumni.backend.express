@@ -7,4 +7,8 @@ export class AppController{
     public home_page(request: Request, response: Response){
         return appService.Index(request, response);
     }
+
+    public initial_user(request:Request, response: Response){
+        return appService.GetInitialUser(request, response);
+    }
 }

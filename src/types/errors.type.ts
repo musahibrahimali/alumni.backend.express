@@ -3,4 +3,5 @@ export type errorType = {
     password: string;
     firstName?: string,
     lastName?: string,
+    phone?: string,
 }

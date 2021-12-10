@@ -1,37 +1,37 @@
 import {Request, Response} from "express";
-import {AuthService} from "../services/services";
+import {UserService} from "../services/services";
 
-const authService = new AuthService();
+const userService = new UserService();
 
-export class AuthController{
+export class UserController{
     constructor(){}
     // sign in
     public signIn(request:Request, response: Response){
-        return authService.SignIn(request, response);
+        return userService.SignIn(request, response);
     }
 
     // sign up
     public signUp(request:Request, response: Response){
-        return authService.SignUp(request, response);
+        return userService.SignUp(request, response);
     }
 
     // facebook login
     public facebookLogin(request:Request, response: Response){
-        return authService.FacebookLogin(request, response);
+        return userService.FacebookLogin(request, response);
     }
 
     // google login
     public googleLogin(request:Request, response: Response){
-        return authService.GoogleLogin(request, response);
+        return userService.GoogleLogin(request, response);
     }
 
     public socialLogin(request:Request, response: Response){
-        return authService.SocialLogin(request, response);
+        return userService.SocialLogin(request, response);
     }
 
     // log out
     public logOut(request:Request, response: Response){
-        return authService.LogOut(request, response);
+        return userService.LogOut(request, response);
     }
 
 }

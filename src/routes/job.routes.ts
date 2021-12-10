@@ -16,18 +16,18 @@ router.get('/jobs', (request:Request, response:Response) => {
 });
 
 // get job by id
-router.get('/jobs:id', (request:Request, response:Response) => {
+router.get('/jobs/:id', (request:Request, response:Response) => {
     return jobsController.getJobById(request, response);
 });
 
 
 // get job by title
-router.get('/jobs:title', (request:Request, response:Response) => {
+router.get('/jobs/:title', (request:Request, response:Response) => {
     return jobsController.getJobByTitle(request, response);
 });
 
 // update job
-router.put('/jobs:id', requireAuth, (request:Request, response:Response) => {
+router.put('/jobs/:id', requireAuth, (request:Request, response:Response) => {
     return jobsController.updateJob(request, response);
 });
 

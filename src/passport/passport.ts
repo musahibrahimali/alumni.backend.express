@@ -12,11 +12,11 @@ import { SocialUserModel } from '../database/database';
 export const initPassport = (passport: PassportStatic) => {
     // google auth details
     const GoogleStrategy = googleStrategy.Strategy;
-    const GOOGLE_CALLBACK_URL = "/google/callback";
+    const GOOGLE_CALLBACK_URL = "/user/google/callback";
     
     // facebook auth details
     const FacebookStrategy = passportFacebook.Strategy;
-    const FACEBOOK_CALLBACK_URL = "/facebook/callback";
+    const FACEBOOK_CALLBACK_URL = "/user/facebook/callback";
     
     passport.use(
         new GoogleStrategy(

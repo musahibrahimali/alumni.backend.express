@@ -16,22 +16,22 @@ router.get('/blog', (request: Request, response:Response) => {
 });
 
 // get blog item by id
-router.get('/blog:id', (request: Request, response:Response) => {
+router.get('/blog/:id', (request: Request, response:Response) => {
     return blogController.getBlogById(request, response);
 });
 
 // get blog item by title
-router.get('/blog:title', (request: Request, response:Response) => {
+router.get('/blog/:title', (request: Request, response:Response) => {
     return blogController.getBlogByTitle(request, response);
 });
 
 // update blog item
-router.put('/blog:id', (request: Request, response:Response) => {
+router.put('/blog/:id', (request: Request, response:Response) => {
     return blogController.updateBlog(request, response);
 });
 
 // delete blog item
-router.delete('/blog:id', (request: Request, response:Response) => {
+router.delete('/blog/:id', (request: Request, response:Response) => {
     return blogController.deleteBlog(request, response);
 });
 
