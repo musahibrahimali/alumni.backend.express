@@ -7,7 +7,7 @@
 
 yarn.lock
 package-lock.json
-/src/config/keys.ts
+/src/config/config.ts
 
 # dependencies
 /node_modules
@@ -27,6 +27,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env.local
 .env.development.local
 .env.test.local
