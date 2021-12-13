@@ -1,33 +1,73 @@
 import { Request, Response } from "express";
-import { TrollService } from '../services/services';
-
-const trollService = new TrollService();
+import { TrollModel } from "../models/models";
 
 export class TrollController{
     constructor(){}
 
-    getAllTrolls = (request: Request, response: Response) => {
-        return trollService.getAllTrolls(request, response);
-    };
-
-    getTrollById = (request: Request, response: Response) => {
-        return trollService.getTrollById(request, response);
+    getAllTrolls = async (request: Request, response: Response) => {
+        try{
+            const trolls = await TrollModel.find();
+            return response.status(200).json({ trolls : trolls });
+        }catch(error){
+            return response.status(400).json({ errors : error });
+        }
     }
 
-    getTrollByUser = (request: Request, response: Response) => {
-        return trollService.getTrollByUser(request, response);
+    getTrollById = async (request: Request, response: Response) => {
+        const id = request.params.id;
+        try{
+            const troll = await TrollModel.findById({_id: id});
+            return response.status(200).json({ troll : troll });
+        }catch(error){
+            return response.status(400).json({ errors : error });
+        }
     }
 
-    createTroll = (request: Request, response: Response) => {
-        return trollService.createTroll(request, response);
+    getTrollByUser = async (request: Request, response: Response) => {
+        const user = request.params.user;
+        try{
+            const troll = await TrollModel.findOne({user: user});
+            return response.status(200).json({ troll : troll });
+        }catch(error){
+            return response.status(400).json({ errors : error });
+        }
     }
 
-    updateTroll = (request: Request, response: Response) => {
-        return trollService.updateTroll(request, response);
+    createTroll = async (request: Request, response: Response) => {
+        const {user, details} = request.body;
+        const snippet = details.substring(0, 100);
+        try{
+            const newTroll = new TrollModel({
+                user: user,
+                details: details,
+                snippet: snippet,
+                date: new Date(),
+            });
+            const troll = await newTroll.save();
+            return response.status(200).json({ troll : troll });
+        }catch(error){
+            return response.status(400).json({ errors : error });
+        }
     }
 
-    deleteTroll = (request: Request, response: Response) => {
-        return trollService.deleteTroll(request, response);
+    updateTroll = async (request: Request, response: Response) => {
+        const {id} = request.body;
+        try{
+            const troll = await TrollModel.findByIdAndUpdate({_id : id},{});
+            return response.status(400).json({ troll : troll });
+        }catch(error){
+            return response.status(400).json({ errors : error });
+        }
+    }
+
+    deleteTroll = async (request: Request, response: Response) => {
+        const {id} = request.body;
+        try{
+            await TrollModel.deleteOne({_id : id});
+            return response.status(200).json({ message : "Deleted Successfully" });
+        }catch(error){
+            return response.status(400).json({ errors : error });
+        }
     }
     
 }

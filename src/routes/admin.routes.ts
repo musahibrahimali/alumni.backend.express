@@ -9,19 +9,19 @@ router.get('/dashboard', (request:Request, response:Response) => {
 });
 
 router.post('/login', (request:Request, response:Response) => {
-    return adminController.login_admin(request, response);
+    return adminController.SignInAdmin(request, response);
 });
 
 router.post('/signup', (request:Request, response:Response) => {
-    return adminController.register_admin(request, response);
+    return adminController.RegisterAdmin(request, response);
 });
 
 router.get('/initial/:id', (request:Request, response:Response) => {
-    return adminController.find_initial_admin(request, response);
+    return adminController.GetInitialAdmin(request, response);
 });
 
 router.get('/logout', (request:Request, response:Response) => {
-    return adminController.logout_admin(request, response);
+    return adminController.LogOutAdmin(request, response);
 });
 
 

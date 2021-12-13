@@ -1,14 +1,14 @@
 import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from '../config/keys';
-import {UserModel,SocialUserModel} from "../database/models/models";
+import config from "../config/config";
+import {UserModel,SocialUserModel} from "../models/models";
 
 export const requireAuth = (request:Request, response:Response, next:NextFunction) => {
     const token = request.cookies.jwt;
 
     // check if token is valid
     if (token) {
-        jwt.verify(token, JWT_SECRET, (error:any, decodedToken: number|any) => {
+        jwt.verify(token, config.session.JWT_SECRET, (error:any, decodedToken: number|any) => {
             if (error) {
                 // if the token is invalid, redirect to login
                 response.redirect('/');
@@ -28,7 +28,7 @@ export const requireAuth = (request:Request, response:Response, next:NextFunctio
 export const checkUser = (request:Request, response:Response, next:NextFunction) => {
     const token = request.cookies.jwt;
     if (token) {
-        jwt.verify(token, JWT_SECRET, async (error:any, decodedToken: any) => {
+        jwt.verify(token, config.session.JWT_SECRET, async (error:any, decodedToken: any) => {
             if (error) {
                 response.locals.user = null;
                 next();

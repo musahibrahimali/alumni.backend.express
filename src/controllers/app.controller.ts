@@ -1,14 +1,8 @@
 import {Request, Response} from 'express';
-import {AppService} from '../services/services';
-
-const appService = new AppService();
 
 export class AppController{
-    public home_page(request: Request, response: Response){
-        return appService.Index(request, response);
-    }
-
-    public initial_user(request:Request, response: Response){
-        return appService.GetInitialUser(request, response);
+    // home page end point
+    Index = async (request: Request, response: Response) => {
+        return response.status(200).send({page: "home"});
     }
 }

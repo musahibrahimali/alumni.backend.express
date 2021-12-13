@@ -1,17 +1,19 @@
 import mongoose from 'mongoose';
-import validator from "validator";
+const Schema = mongoose.Schema;
 
-const UserSchema = new mongoose.Schema({
+const SocialUserSchema = new Schema({
+    socialId: {
+        type: String,
+        required: false,
+        default: null
+    },
     email: {
         type: String,
-        required: [true, "Please enter a valid password"],
-        unique: true,
-        lowercase: true,
-        validate: [validator.isEmail, "Please enter a valid email address"]
+        required: true,
     },
     displayName: {
         type: String,
-        required: false,
+        required: true,
     },
     firstName:{
         type: String,
@@ -20,11 +22,6 @@ const UserSchema = new mongoose.Schema({
     lastName:{
         type: String,
         required: [true, "This field is required"],
-    },
-    password: {
-        type: String,
-        required: [true, "Please enter a valid password"],
-        minlength: [8, "Password must be less than 8 characters"]
     },
     image: {
         type: String,
@@ -35,4 +32,4 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export default UserSchema;
+export const SocialUserModel = mongoose.model("social_user", SocialUserSchema);

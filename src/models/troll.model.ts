@@ -1,6 +1,9 @@
-import { Schema } from "mongoose";
-import {ImageSchema} from './schemas';
+import mongoose from 'mongoose';
+import ImageSchema from './image.schema';
+import Schema = mongoose.Schema;
 
+
+// trolls schema
 const TrollSchema = new Schema({
     details:{
         type: String,
@@ -21,4 +24,4 @@ const TrollSchema = new Schema({
     timestamps: true,
 });
 
-export default TrollSchema;
+export const TrollModel = mongoose.model("troll", TrollSchema);

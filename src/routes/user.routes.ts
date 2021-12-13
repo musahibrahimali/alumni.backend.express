@@ -8,12 +8,12 @@ const userController = new UserController();
 
 // log in user
 router.post("/login", (request:Request, response:Response) => {
-    return userController.signIn(request, response);
+    return userController.SignIn(request, response);
 });
 
 // register user
 router.post("/signup", (request:Request, response:Response) => {
-    return userController.signUp(request, response);
+    return userController.SignUp(request, response);
 });
 
 // facebook login
@@ -36,7 +36,7 @@ router.get(
         session: false,
     }),
     (request:Request, response:Response) => {
-        return userController.facebookLogin(request, response);
+        return userController.FacebookLogin(request, response);
     }
 )
 
@@ -60,17 +60,17 @@ router.get(
         session: false,
     }),
     (request:Request, response:Response) => {
-        return userController.googleLogin(request, response);
+        return userController.GoogleLogin(request, response);
     }
 );
 
-router.get("/success", ensureAuth, (request:Request, response:Response) => {
-    return userController.socialLogin(request, response);
+router.get("/done", (request:Request, response:Response) => {
+    return userController.SocialLogin(request, response);
 });
 
 // log out user
 router.get("/logout", (request:Request, response:Response) => {
-    return userController.logOut(request, response);
+    return userController.LogOut(request, response);
 });
 
 export default router;

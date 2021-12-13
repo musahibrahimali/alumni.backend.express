@@ -1,33 +1,71 @@
 import { Request, Response } from "express";
-import { EventsService } from '../services/services';
-
-const eventsService = new EventsService();
+import { EventModel } from "../models/models";
 
 export class EventsController{
     constructor(){}
 
-    getAllEvents = (request:Request, response:Response) => {
-        return eventsService.getAllEvents(request, response);
+    getAllEvents = async (request:Request, response:Response) => {
+        try{
+            const events = await EventModel.find();
+            return response.status(200).json({ events: events });
+        }catch(error){
+            return response.status(400).json({ error: error });
+        }
     }
 
-    getEventById = (request:Request, response:Response) => {
-        return eventsService.getEventById(request, response);
+    getEventById = async (request:Request, response:Response) => {
+        const {id} = request.body;
+        try{
+            const event = await EventModel.findById({_id : id });
+            return response.status(200).json({ event: event });
+        }catch(error){
+            return response.status(400).json({ error: error });
+        }
     }
 
-    getEventByTitle = (request:Request, response:Response) => {
-        return eventsService.getEventByTitle(request, response);
+    getEventByTitle = async (request:Request, response:Response) => {
+        const {title} = request.body;
+        const event = await EventModel.findOne({ title : title });
+        return response.status(200).json({ event: event });
     }
 
-    createEvent = (request:Request, response:Response) => {
-        return eventsService.createEvent(request, response);
+    createEvent = async (request:Request, response:Response) => {
+        const { title, details, image } = request.body;
+        const snippet = details.substring(0, 100);
+        try{
+            const event = new EventModel({
+                title : title,
+                snippet : snippet,
+                details : details,
+                date : new Date(),
+                image : image,
+            });
+            const newEvent = await event.save();
+            return response.status(200).json({ eventId : newEvent._id });
+        }catch(error){
+            return response.status(400).json({ error });
+        }
     }
 
-    updateEvent = (request:Request, response:Response) => {
-        return eventsService.updateEvent(request, response);
+    updateEvent = async (request:Request, response:Response) => {
+        const {id} = request.body;
+        try{
+            const event = EventModel.findByIdAndUpdate({_id : id},{});
+            return response.status(200).json({event: event });
+        }catch(error){
+            return response.status(400).json({ error: error });
+        }
     }
 
-    deleteEvent = (request:Request, response:Response) => {
-        return eventsService.deleteEvent(request, response);
+    deleteEvent = async (request:Request, response:Response) => {
+        const {id} = request.body;
+        try{
+            await EventModel.deleteOne({_id : id});
+            return response.status(200).json({ message: "Deleted Successfully" });
+
+        }catch(error){
+            return response.status(400).json({ error: error });
+        }
     }
 
 }

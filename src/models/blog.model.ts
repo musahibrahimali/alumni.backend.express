@@ -1,5 +1,7 @@
-import { Schema } from "mongoose";
-import ImageSchema from './image.schema';
+import mongoose from "mongoose";
+import ImageSchema from "./image.schema";
+
+const Schema = mongoose.Schema;
 
 const BlogSchema = new Schema({
     title: {
@@ -43,4 +45,4 @@ const BlogSchema = new Schema({
     timestamps: true,
 });
 
-export default BlogSchema;
+export const BlogModel = mongoose.model("blog", BlogSchema);

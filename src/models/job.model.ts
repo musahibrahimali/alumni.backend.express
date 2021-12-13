@@ -1,5 +1,7 @@
-import { Schema } from "mongoose";
-import {ImageSchema} from './schemas';
+import mongoose from 'mongoose';
+import ImageSchema from './image.schema';
+const Schema = mongoose.Schema;
+
 
 const JobSchema = new Schema({
     title: {
@@ -27,4 +29,4 @@ const JobSchema = new Schema({
     timestamps: true,
 });
 
-export default JobSchema;
+export const JobModel = mongoose.model("job", JobSchema);
