@@ -3,13 +3,13 @@ const Port : number = parseInt(_port, 10) || 5000;
 
 export default {
     google: {
-        GOOGLE_CLIENT_ID: "xxxxxxxxxxxxxxxxxxxxxxx",
-        GOOGLE_CLIENT_SECRET: "xxxxxxxxxxxxxxxxxxxxxxx",
+        GOOGLE_CLIENT_ID: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        GOOGLE_CLIENT_SECRET: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         GOOGLE_CALLBACK_URL: "http://localhost:5000/users/google/callback"
     },
     facebook: {
-        FACEBOOK_APP_ID: "xxxxxxxxxxxxxxxxxxxxxxx",
-        FACEBOOK_APP_SECRET: "xxxxxxxxxxxxxxxxxxxxxxx",
+        FACEBOOK_APP_ID: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        FACEBOOK_APP_SECRET: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         FACEBOOK_CALLBACK_URL: "http://localhost:5000/users/facebook/callback"
     },
     cors:{
@@ -29,9 +29,9 @@ export default {
         CLIENT_URL: process.env.ORIGIN || 'http://localhost:3000',
     },
     session: {
-        JWT_SECRET:"xxxxxxxxxxxxxxxxxxxxxxx",
+        JWT_SECRET:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
 
-        cookieKey: "xxxxxxxxxxxxxxxxxxxxxxx",
+        cookieKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         
         JWT_EXPIRES_IN: 60 * 60 * 24 * 1,
         SALT_ROUNDS: 10,
