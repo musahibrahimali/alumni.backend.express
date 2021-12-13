@@ -6,7 +6,7 @@ This is the backend of the alumni project
 
 - [install node js](<https://nodejs.org/en/>)
 
-- rename env.example to .env
+- rename .env.example to .env
 
 - rename /src/config/config.example.ts to config.ts
 
