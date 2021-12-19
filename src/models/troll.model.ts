@@ -1,25 +1,24 @@
 import mongoose from 'mongoose';
+import CommentSchema from './comment.model';
 import ImageSchema from './image.schema';
+import LikeSchema from './like.model';
 import Schema = mongoose.Schema;
-
 
 // trolls schema
 const TrollSchema = new Schema({
     details:{
         type: String,
-        required: [true, "This field is required"],
     },
-
     snippet:{
         type: String,
     },
-
-    image:[ImageSchema],
-
-    date: {
+    user:{
         type: String,
+        required: [true, "This field is required"]
     },
-
+    media:[ImageSchema],
+    likes: [LikeSchema],
+    comments: [CommentSchema],
 },{
     timestamps: true,
 });
