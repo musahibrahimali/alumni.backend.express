@@ -1,22 +1,16 @@
 import mongoose from 'mongoose';
 import CommentSchema from './comment.model';
-import ImageSchema from './image.schema';
+// import { ImageSchema, VideoSchema } from './media.schema';
+import { PostUserSchema } from './user.model';
 import LikeSchema from './like.model';
 import Schema = mongoose.Schema;
 
 // trolls schema
 const TrollSchema = new Schema({
-    details:{
-        type: String,
-    },
-    snippet:{
-        type: String,
-    },
-    user:{
-        type: String,
-        required: [true, "This field is required"]
-    },
-    media:[ImageSchema],
+    post:{type: String},
+    user: PostUserSchema,
+    images:[{id: String, image: String}],
+    videos:[{id: String, video: String}],
     likes: [LikeSchema],
     comments: [CommentSchema],
 },{

@@ -39,6 +39,30 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 });
 
+//  post user schema
+export const PostUserSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        unique: true,
+        lowercase: true,
+    },
+    displayName: {
+        type: String,
+        required: false,
+    },
+    firstName:{
+        type: String,
+    },
+    lastName:{
+        type: String,
+    },
+    image: {
+        type: String,
+        required: false,
+        default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+    },
+});
+
 // fire a function before saving to database (hash password)
 UserSchema.pre('save', async function (next) {
     const user = this;

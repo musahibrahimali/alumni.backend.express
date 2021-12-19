@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import ImageSchema from './image.schema';
+import {ImageSchema} from './media.schema';
 const Schema = mongoose.Schema;
 
 

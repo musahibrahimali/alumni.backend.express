@@ -15,6 +15,15 @@ export const requireAuth = (request:Request, response:Response, next:NextFunctio
             } else {
                 // @ts-ignore
                 request.decodedToken = decodedToken;
+                const userId = decodedToken.id;
+                // find user in both UserModel and SocialModel
+                const user = UserModel.findById(userId);
+                const socialUser = SocialUserModel.findById(userId);
+                if(user != null){
+                    response.locals.user = user;
+                }else{
+                    response.locals.user = socialUser;
+                }
                 next();
             }
         });
@@ -53,8 +62,8 @@ export const checkUser = (request:Request, response:Response, next:NextFunction)
 
 export const ensureAuth = (request:Request, response:Response, next:NextFunction) => {
     if (request.isAuthenticated()) {
-        return next()
+        return next();
     } else {
-        response.redirect('/')
+        response.redirect('/');
     }
 }
