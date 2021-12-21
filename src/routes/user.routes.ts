@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 import passport from "passport";
 import {UserController} from "../controllers/controllers";
-import { ensureAuth } from "../middleware/auth.middleware";
+import { checkUser } from '../middleware/auth.middleware';
 
 const router = Router();
 const userController = new UserController();
@@ -15,6 +15,12 @@ router.post("/login", (request:Request, response:Response) => {
 router.post("/signup", (request:Request, response:Response) => {
     return userController.SignUp(request, response);
 });
+
+// call when users are authenticated
+router.get("/done", checkUser, (request:Request, response:Response) => {
+    return userController.LoggedInUsers(request, response);
+});
+
 
 // facebook login
 router.get(
@@ -63,10 +69,6 @@ router.get(
         return userController.GoogleLogin(request, response);
     }
 );
-
-router.get("/done", (request:Request, response:Response) => {
-    return userController.SocialLogin(request, response);
-});
 
 // log out user
 router.get("/logout", (request:Request, response:Response) => {

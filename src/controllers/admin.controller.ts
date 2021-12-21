@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import { AdminModel } from "../models/admin.model";
+import { AdminModel } from "../models/models";
 import { createToken,handleErrors } from "../utils/utils";
 import config from "../config/config";
 

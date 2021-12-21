@@ -2,7 +2,7 @@ import passport from "passport";
 import googleStrategy from 'passport-google-oauth20';
 import facebookStrategy from 'passport-facebook';
 import config from "../config/config";
-import { SocialUserModel } from "../models/social.model";
+import { UserModel } from '../models/user/user.model';
 
 // google auth details
 const GoogleStrategy = googleStrategy.Strategy;
@@ -16,7 +16,7 @@ passport.serializeUser((user:any, done) => {
 
 // deserialize user
 passport.deserializeUser((id, done) => {
-    SocialUserModel.findById(id).then((user) => {
+    UserModel.findById(id).then((user) => {
         done(null, user);
     });
 });
@@ -29,11 +29,11 @@ passport.use(
             callbackURL: config.google.GOOGLE_CALLBACK_URL
         },
         async (_accessToken:any, _refreshToken:any, profile:any, done) => {
-            await SocialUserModel.findOne({ socialId: profile.id }).then((user) => {
+            await UserModel.findOne({ socialId: profile.id }).then((user) => {
                 if (user) {
                     done(null, user);
                 } else {
-                    const newUser = new SocialUserModel({
+                    const newUser = new UserModel({
                         socialId: profile.id,
                         email: profile.emails[0].value,
                         displayName: profile.displayName,
@@ -57,11 +57,11 @@ passport.use(
             callbackURL: config.facebook.FACEBOOK_CALLBACK_URL,
         },
         async (_accessToken: any, _refreshToken: any, profile: any, done) => {
-            await SocialUserModel.findOne({socialId: profile.id}).then((user) => {
+            await UserModel.findOne({socialId: profile.id}).then((user) => {
                 if(user){
                     done(null, user);
                 }else{
-                    const newUser = new SocialUserModel({
+                    const newUser = new UserModel({
                         socialId: profile.id,
                         email: profile.emails[0].value,
                         displayName: profile.displayName,

@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import config from "../config/config";
-import { UserModel,SocialUserModel } from "../models/models";
+import { UserModel } from "../models/models";
 import { createToken,handleErrors } from "../utils/utils";
 import jwt from "jsonwebtoken";
 
@@ -75,7 +75,7 @@ export class UserController{
         return response.redirect(config.origin.CLIENT_URL);
     }
 
-    SocialLogin = async (request: Request, response: Response) => {
+    LoggedInUsers = async (request: Request, response: Response) => {
         let token = "";
         const rawCookies = request.headers.cookie;
         if(rawCookies){
@@ -94,30 +94,17 @@ export class UserController{
                     if (error){
                         return response.status(200).send({data: "There was an error fetching user"});
                     }else{
-                        const _id: string = decodedToken.userId;
-                        const _user = await UserModel.findById(_id);
-                        const _socialUser = await SocialUserModel.findOne({userId: _id});
-                        if(_user){
-                            const data = {
-                                userId: _user._id,
-                                email: _user.email,
-                                displayName: _user.displayName,
-                                firstName: _user.firstName,
-                                lastName: _user.lastName,
-                                image : _user.image,
-                            }
-                            return response.status(200).json({ data: data });
-                        }else{
-                            const data = {
-                                userId: _socialUser._id,
-                                email: _socialUser.email,
-                                displayName: _socialUser.displayName,
-                                firstName: _socialUser.firstName,
-                                lastName: _socialUser.lastName,
-                                image : _socialUser.image,
-                            }
-                            return response.status(200).json({ data: data });
+                        const id: string = decodedToken.id;
+                        const _user = await UserModel.findOne({_id: id});
+                        const data = {
+                            userId: _user._id,
+                            email: _user.email,
+                            displayName: _user.displayName,
+                            firstName: _user.firstName,
+                            lastName: _user.lastName,
+                            image : _user.image,
                         }
+                        return response.status(200).json({ data: data });
                     }
                 });
             }

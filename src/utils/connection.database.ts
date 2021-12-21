@@ -4,7 +4,9 @@ import config from "../config/config";
 export const connectDatabase = () => {
     // connect to mongodb
     mongoose
-        .connect(config.mongodb.DB_URL).then(() => {
+        .connect(
+            config.mongodb.DB_URL,
+        ).then(() => {
             console.info("Connected to database successfully");
         }).catch(error => {
             console.error("database connection error", error);

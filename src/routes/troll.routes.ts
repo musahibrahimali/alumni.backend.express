@@ -1,6 +1,7 @@
-import { Request, Response, Router } from "express";
+import { Request, response, Response, Router } from "express";
 import { TrollController } from '../controllers/troll.controller';
 import { checkUser, requireAuth } from "../middleware/auth.middleware";
+import { uploadMiddleware } from '../middleware/middlewares';
 
 const router = Router();
 
@@ -10,23 +11,18 @@ const trollController = new TrollController();
 // router.get('*', checkUser);
 
 // create a troll
-router.post('/troll/post', (request: Request, response: Response) => {
+router.post('/troll/post', uploadMiddleware, (request: Request, response: Response) => {
     return trollController.createTroll(request, response);
 });
 
 // get all trolls
-router.get('/troll/post/all', (request: Request, response: Response) => {
+router.get('/troll/all', (request: Request, response: Response) => {
     return trollController.getAllTrolls(request, response);
 });
 
 // get troll by id
-router.get('/troll/:id', requireAuth, (request: Request, response: Response) => {
+router.get('/troll/:id', (request: Request, response: Response) => {
     return trollController.getTrollById(request, response);
-});
-
-// get troll by user
-router.get('/troll/:user', requireAuth, (request: Request, response: Response) => {
-    return trollController.getTrollByUser(request, response);
 });
 
 // update troll
@@ -47,6 +43,16 @@ router.post('/troll/:id/comment', requireAuth, (request: Request, response: Resp
 // update likes of a troll post
 router.post('/troll/:id/like', requireAuth, (request: Request, response: Response) => {
     return trollController.updateLikes(request, response);
+});
+
+// get troll images
+router.get('/troll/images/:id', (request: Request, response: Response) => {
+    return trollController.getTrollImages(request, response);
+});
+
+// get troll videos
+router.get('/troll/videos/:id', (request: Request, response: Response) => {
+    return trollController.getTrollVideos(request, response);
 });
 
 export default router;
