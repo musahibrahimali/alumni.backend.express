@@ -1,11 +1,6 @@
 import mongoose, {Schema} from 'mongoose';
 
-const TrollCommentSchema = new Schema({
-    troll: {
-        type: Schema.Types.ObjectId,
-        ref: 'Troll',
-        required: true
-    },
+export const TrollCommentSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -18,5 +13,3 @@ const TrollCommentSchema = new Schema({
 }, {
     timestamps: true,
 });
-
-export const TrollCommentModel = mongoose.model('TrollComment', TrollCommentSchema);

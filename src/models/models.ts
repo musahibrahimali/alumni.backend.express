@@ -15,5 +15,3 @@ export {BlogModel} from './blog/blog.model';
 
 // troll and its models
 export {TrollModel} from './troll/troll.model';
-export {TrollCommentModel} from './troll/trollcomment.model';
-export { TrollLikesModel } from './troll/tolllikes.model';

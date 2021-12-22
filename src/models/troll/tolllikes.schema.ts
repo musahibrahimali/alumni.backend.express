@@ -1,6 +1,9 @@
 import mongoose, {Schema} from 'mongoose';
 
-const TrollLikesSchema = new Schema({
+
+
+
+export const TrollLikesSchema = new Schema({
     troll: {
         type: Schema.Types.ObjectId,
         ref: 'Troll',
@@ -14,5 +17,3 @@ const TrollLikesSchema = new Schema({
 }, {
     timestamps: true,
 });
-
-export const TrollLikesModel = mongoose.model('TrollLike', TrollLikesSchema);

@@ -26,33 +26,28 @@ router.get('/troll/:id', (request: Request, response: Response) => {
 });
 
 // update troll
-router.put('/troll/:id', requireAuth, (request: Request, response: Response) => {
+router.put('/troll/:id', (request: Request, response: Response) => {
     return trollController.updateTroll(request, response);
 });
 
 // delete troll
-router.delete('troll/:id', requireAuth, (request: Request, response: Response) => {
+router.delete('troll/delete', (request: Request, response: Response) => {
     return trollController.deleteTroll(request, response);
 });
 
 // add comment to post 
-router.post('/troll/:id/comment', requireAuth, (request: Request, response: Response) => {
+router.post('/troll/comment', (request: Request, response: Response) => {
     return trollController.addComment(request, response);
 });
 
 // update likes of a troll post
-router.post('/troll/:id/like', requireAuth, (request: Request, response: Response) => {
+router.post('/troll/like', (request: Request, response: Response) => {
     return trollController.updateLikes(request, response);
 });
 
-// get troll images
-router.get('/troll/images/:id', (request: Request, response: Response) => {
-    return trollController.getTrollImages(request, response);
-});
-
-// get troll videos
-router.get('/troll/videos/:id', (request: Request, response: Response) => {
-    return trollController.getTrollVideos(request, response);
+// share post 
+router.post('/troll/share', (request: Request, response: Response) => {
+    return trollController.updateShares(request, response);
 });
 
 export default router;
