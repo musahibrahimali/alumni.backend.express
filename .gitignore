@@ -8,6 +8,7 @@
 yarn.lock
 package-lock.json
 /src/config/config.ts
+/uploads
 
 # dependencies
 /node_modules

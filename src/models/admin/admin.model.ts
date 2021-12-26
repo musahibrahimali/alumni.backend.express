@@ -32,12 +32,12 @@ const AdminSchema = new Schema({
     },
     phone: {
         type: String,
-        required: [validator.isMobilePhone, "Please enter a valid phone number"],
+        required: [true, "Please enter a valid phone number"],
     },
     previousImages: [String],
     image: {
         type: String,
-        default: 'https://res.cloudinary.com/dzqb0zvxu/image/upload/v1589788981/default_avatar_jxqzqz.png'
+        default: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
     },
 }, {
     timestamps: true
@@ -64,4 +64,4 @@ AdminSchema.statics.login = async function (email, password):Promise<AdminInterf
     return admin;
 };
 
-export const AdminModel = mongoose.model('admin', AdminSchema);
+export const AdminModel = mongoose.model('Admin', AdminSchema);

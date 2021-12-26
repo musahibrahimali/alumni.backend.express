@@ -16,7 +16,7 @@ router.post('/signup', (request:Request, response:Response) => {
     return adminController.RegisterAdmin(request, response);
 });
 
-router.get('/initial/:id', (request:Request, response:Response) => {
+router.get('/initial', (request:Request, response:Response) => {
     return adminController.GetInitialAdmin(request, response);
 });
 

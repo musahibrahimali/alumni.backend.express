@@ -56,10 +56,13 @@ app.use(trollRoutes);
 app.use('/admin', adminRoutes);
 
 // Start server
-const application: Application | any = server.listen(config.env.Port, config.env.Host, () => {
-    const {port, address} = application.address();
-    console.log(`Server Ready and Listening at ${address} on port ${port} -> (http://localhost:${port})`);
-});
+const application: Application | any = server.listen(
+    config.env.Port, config.env.Host, 
+    () => {
+        const {port, address} = application.address();
+        console.log(`Server Ready and Listening at ${address} on port ${port} -> (http://localhost:${port})`);
+    }
+);
 
 // socket io
 io.on('connection', (socket: socketio.Socket) => {
