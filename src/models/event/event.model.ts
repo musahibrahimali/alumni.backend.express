@@ -14,8 +14,17 @@ const EventSchema = new Schema({
     snippet:{
         type: String,
     },
+    venue:{
+        type: String,
+    },
+    images:[String],
+    videos:[String],
+    guest:[{}],
     date: {
         type: String,
+    },
+    time: {
+        type: Date,
     },
     image: [String],
 },{

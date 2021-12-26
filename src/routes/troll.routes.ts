@@ -1,6 +1,5 @@
 import { Request, response, Response, Router } from "express";
 import { TrollController } from '../controllers/troll.controller';
-import { checkUser, requireAuth } from "../middleware/auth.middleware";
 import { uploadMiddleware } from '../middleware/middlewares';
 
 const router = Router();

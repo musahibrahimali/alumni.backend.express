@@ -1,8 +1,123 @@
 import { Request, Response } from "express";
 import { EventModel } from "../models/models";
+import { UserModel } from '../models/user/user.model';
+import mongoose from 'mongoose';
+import config from "../config/config";
+import BufferList from "bl/BufferList";
+
+const database = mongoose.createConnection(config.mongodb.DB_URL);
+let imgGfs:any;
+let vidGfs:any;
+
+database.once('open', () => {
+    imgGfs = new mongoose.mongo.GridFSBucket(database.db, {
+        bucketName: 'eventimages',
+    });
+    vidGfs = new mongoose.mongo.GridFSBucket(database.db, {
+        bucketName: 'eventvideos',
+    });
+});
+
+const findUser = async (userId:string) => {
+    let userData = null;
+    const user = await UserModel.findById(userId);
+    if(user){
+        userData = {
+            userId: user._id,
+            socialId: user.socialId,
+            displayName: user.displayName,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            image: user.image,
+        }
+    }
+    return userData;
+}
+
+// get troll image
+const getImage = async (_id:any) => {
+    // find the image, read it in chunks and return the buffer
+    const readStream = imgGfs.openDownloadStream(_id);
+    const bufferList = new BufferList();
+    readStream.on('data', (chunk:any) => {
+        bufferList.append(chunk);
+    });
+    return new Promise((resolve, reject) => {
+        readStream.on('end', () => {
+            resolve(bufferList);
+        });
+    });
+}
+
+// get troll video
+const getVideo = async (_id:any) => {
+    // find the image, read it in chunks and return the buffer
+    const readStream = vidGfs.openDownloadStream(_id);
+    const bufferList = new BufferList();
+    readStream.on('data', (chunk:any) => {
+        bufferList.append(chunk);
+    });
+    return new Promise((resolve, reject) => {
+        readStream.on('end', () => {
+            resolve(bufferList);
+        });
+    });
+}
 
 export class EventsController{
     constructor(){}
+
+    createEvent = async (request:Request, response:Response) => {
+        const fileData:any = request.files;
+        const { 
+            title, 
+            details,
+            snippet, 
+            date, 
+            time, 
+            venue, 
+            guests,
+        } = request.body;
+        
+        try{
+            const imageIds:string[] = [];
+            const videoIds:string[] = [];
+
+            // get id of images and videos from request and add it to the images array
+            // @ts-ignore
+            if(fileData.images){
+                for(let i = 0; i < fileData.images.length; i++){
+                    const image = fileData.images[i];
+                    imageIds.push(image.id);
+                }
+            }
+            // get all the video ids and add it to the videos array
+            // @ts-ignore
+            if(fileData.videos){
+                for(let i = 0; i < fileData.videos.length; i++){
+                    const video = fileData.videos[i];
+                    videoIds.push(video.id);
+                }
+            }
+
+            const event = new EventModel({
+                title : title,
+                snippet : snippet,
+                details : details,
+                venue: venue,
+                date : date,
+                time: time,
+                images : imageIds,
+                videos: videoIds,
+                guest: guests,
+            });
+            const newEvent = await event.save();
+            return response.status(200).json({ eventId : newEvent._id });
+        }catch(error){
+            return response.status(400).json({ error });
+        }
+    }
 
     getAllEvents = async (request:Request, response:Response) => {
         try{
@@ -27,24 +142,6 @@ export class EventsController{
         const {title} = request.body;
         const event = await EventModel.findOne({ title : title });
         return response.status(200).json({ event: event });
-    }
-
-    createEvent = async (request:Request, response:Response) => {
-        const { title, details, image } = request.body;
-        const snippet = details.substring(0, 100);
-        try{
-            const event = new EventModel({
-                title : title,
-                snippet : snippet,
-                details : details,
-                date : new Date(),
-                image : image,
-            });
-            const newEvent = await event.save();
-            return response.status(200).json({ eventId : newEvent._id });
-        }catch(error){
-            return response.status(400).json({ error });
-        }
     }
 
     updateEvent = async (request:Request, response:Response) => {

@@ -1,13 +1,13 @@
 import { Request, Response, Router } from "express";
 import { EventsController } from "../controllers/events.controller";
-import { checkUser, requireAuth } from "../middleware/auth.middleware";
+import { checkUser, requireAuth, eventUploadMiddleware } from '../middleware/middlewares';
 
 const router = Router();
 
 const eventsController = new EventsController();
 
 // create event
-router.post('/events', requireAuth, (request:Request, response:Response) => {
+router.post('/events', eventUploadMiddleware, (request:Request, response:Response) => {
     return eventsController.createEvent(request, response);
 });
 
@@ -27,12 +27,12 @@ router.get('/events/:title', (request:Request, response:Response) => {
 });
 
 // update event
-router.put('/events/:id', requireAuth, (request:Request, response:Response) => {
+router.put('/events/:id', (request:Request, response:Response) => {
     return eventsController.updateEvent(request, response);
 });
 
 // delete event
-router.delete('/events/:id', requireAuth, (request:Request, response:Response) => {
+router.delete('/events/:id', (request:Request, response:Response) => {
     return eventsController.deleteEvent(request, response);
 });
 
