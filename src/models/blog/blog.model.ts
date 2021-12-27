@@ -20,11 +20,11 @@ const BlogSchema = new Schema({
     date: {
         type: String,
     },
-    image:[],
-    video: [],
-    Comments:[],
+    images:[String],
+    videos: [String],
+    Comments:[{}],
 },{
     timestamps: true,
 });
 
-export const BlogModel = mongoose.model("blog", BlogSchema);
+export const BlogModel = mongoose.model("Blog", BlogSchema);

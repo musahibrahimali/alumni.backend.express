@@ -7,7 +7,7 @@ const router = Router();
 const eventsController = new EventsController();
 
 // create event
-router.post('/events', eventUploadMiddleware, (request:Request, response:Response) => {
+router.post('/events/create', eventUploadMiddleware, (request:Request, response:Response) => {
     return eventsController.createEvent(request, response);
 });
 

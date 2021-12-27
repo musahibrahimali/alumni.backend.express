@@ -1,12 +1,13 @@
 import { Request, Response, Router } from "express";
 import { BlogController } from '../controllers/controllers';
+import { blogUploadMiddleware } from '../middleware/blog.middleware';
 
 const router = Router();
 
 const blogController = new BlogController();
 
 // create blog
-router.post('/blog', (request:Request, response:Response) => {
+router.post('/blog/create', blogUploadMiddleware, (request:Request, response:Response) => {
     return blogController.createBlog(request, response);
 });
 

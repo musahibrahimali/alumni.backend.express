@@ -71,12 +71,12 @@ export class EventsController{
     createEvent = async (request:Request, response:Response) => {
         const fileData:any = request.files;
         const { 
-            title, 
-            details,
-            snippet, 
-            date, 
-            time, 
-            venue, 
+            eventTitle, 
+            eventDescription,
+            eventSnippet, 
+            eventDate, 
+            eventTime, 
+            eventVenue, 
             guests,
         } = request.body;
         
@@ -102,12 +102,12 @@ export class EventsController{
             }
 
             const event = new EventModel({
-                title : title,
-                snippet : snippet,
-                details : details,
-                venue: venue,
-                date : date,
-                time: time,
+                title : eventTitle,
+                snippet : eventSnippet,
+                details : eventDescription,
+                venue: eventVenue,
+                date : eventDate,
+                time: eventTime,
                 images : imageIds,
                 videos: videoIds,
                 guest: guests,

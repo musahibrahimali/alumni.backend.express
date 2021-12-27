@@ -1,12 +1,12 @@
 import { Request, Response, Router } from "express";
 import { JobsController } from "../controllers/controllers";
-import { checkUser, requireAuth } from "../middleware/auth.middleware";
+import { checkUser, requireAuth, jobUploadMiddleware } from '../middleware/middlewares';
 
 const router = Router();
 const jobsController = new JobsController();
 
 // create job
-router.post('/jobs', requireAuth, (request:Request, response:Response) => {
+router.post('/jobs/create', jobUploadMiddleware, (request:Request, response:Response) => {
     return jobsController.createJob(request, response);
 });
 

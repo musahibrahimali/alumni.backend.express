@@ -18,13 +18,20 @@ const JobSchema = new Schema({
         type: String,
         required: [true, "This field is required"],
     },
-    date: {
+    location:{
         type: String,
         required: [true, "This field is required"],
     },
-    logo:[String],
+    expireDate: {
+        type: String,
+        required: [true, "This field is required"],
+    },
+    logo:{
+        type: String,
+    },
+    images: [String],
 },{
     timestamps: true,
 });
 
-export const JobModel = mongoose.model("job", JobSchema);
+export const JobModel = mongoose.model("Job", JobSchema);
