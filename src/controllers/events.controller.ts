@@ -76,8 +76,7 @@ export class EventsController{
             eventSnippet, 
             eventDate, 
             eventTime, 
-            eventVenue, 
-            guests,
+            eventVenue,
         } = request.body;
         
         try{
@@ -110,7 +109,6 @@ export class EventsController{
                 time: eventTime,
                 images : imageIds,
                 videos: videoIds,
-                guest: guests,
             });
             const newEvent = await event.save();
             return response.status(200).json({ eventId : newEvent._id });

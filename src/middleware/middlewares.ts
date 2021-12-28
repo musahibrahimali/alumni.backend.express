@@ -7,3 +7,4 @@ export {uploadMiddleware} from './troll.middleware';
 export {eventUploadMiddleware} from './event.middleware';
 export {blogUploadMiddleware} from './blog.middleware';
 export {jobUploadMiddleware} from './job.middleware';
+export {newsUploadMiddleware} from './news.middleware';

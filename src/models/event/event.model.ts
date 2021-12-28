@@ -19,7 +19,6 @@ const EventSchema = new Schema({
     },
     images:[String],
     videos:[String],
-    guest:[{}],
     date: {
         type: String,
     },

@@ -58,6 +58,7 @@ export class JobsController{
             expireDate, 
             jobLocation,
             companyLogo,
+            companyName,
             companyUrl,
         } = request.body;
         try{
@@ -73,6 +74,7 @@ export class JobsController{
 
             const job = new JobModel({
                 title : jobTitle,
+                company: companyName,
                 url : companyUrl,
                 snippet : jobSnippet,
                 details : jobDescription,

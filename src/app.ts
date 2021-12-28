@@ -20,6 +20,7 @@ import {
     blogRoutes,
     trollRoutes,
     adminRoutes,
+    newsRoutes,
 } from './routes/routes';
 
 // create an application
@@ -53,6 +54,7 @@ app.use(eventRoutes);
 app.use(jobRoutes);
 app.use(blogRoutes);
 app.use(trollRoutes);
+app.use(newsRoutes);
 app.use('/admin', adminRoutes);
 
 // Start server

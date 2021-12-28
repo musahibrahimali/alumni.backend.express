@@ -3,7 +3,6 @@ import { AdminModel } from "../models/models";
 import { createToken,handleErrors } from "../utils/utils";
 import config from "../config/config";
 import jwt from "jsonwebtoken";
-
 export class AdminController{
     constructor(){}
     // register a new admin
@@ -49,7 +48,7 @@ export class AdminController{
         const {emailAddress, password} = request.body;
         try{
             //@ts-ignore
-            const _admin = AdminModel.login(emailAddress, password);
+            const _admin = await AdminModel.login(emailAddress, password);
             const token = createToken(_admin._id);
             const admin = {
                 userId: _admin._id,

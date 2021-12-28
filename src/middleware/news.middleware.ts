@@ -23,7 +23,7 @@ const storage = new GridFsStorage({
                     const filename = buf.toString('hex') + "-" + baseName + path.extname(file.originalname);
                     const fileInfo = {
                         filename: filename,
-                        bucketName: 'eventimages'
+                        bucketName: 'newsimages'
                     };
                     resolve(fileInfo);
                 });
@@ -43,7 +43,7 @@ const storage = new GridFsStorage({
                     const filename = buf.toString('hex') + "-" + baseName + path.extname(file.originalname);
                     const fileInfo = {
                         filename: filename,
-                        bucketName: 'eventvideos'
+                        bucketName: 'newsvideos'
                     };
                     resolve(fileInfo);
                 });
@@ -86,7 +86,7 @@ const checkFileType = (file:any, cb:any) => {
 }
 
 // upload middleware
-export const eventUploadMiddleware = (request:Request, response:Response, next:NextFunction) => {
+export const newsUploadMiddleware = (request:Request, response:Response, next:NextFunction) => {
     // upload images and videos
     const upload = store.fields([
         { name: 'images', maxCount: 10, }, 

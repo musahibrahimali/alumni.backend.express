@@ -6,6 +6,10 @@ const JobSchema = new Schema({
         type: String,
         required: [true, "This field is required"],
     },
+    company: {
+        type: String,
+        required: [true, "This field is required"],
+    },
     url:{
         type: String,
         required: [true, "This field is required"],

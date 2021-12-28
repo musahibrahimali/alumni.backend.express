@@ -7,12 +7,12 @@ const router = Router();
 const blogController = new BlogController();
 
 // create blog
-router.post('/blog/create', blogUploadMiddleware, (request:Request, response:Response) => {
+router.post('/blogs/create', blogUploadMiddleware, (request:Request, response:Response) => {
     return blogController.createBlog(request, response);
 });
 
 // get all blog items
-router.get('/blog', (request: Request, response:Response) => {
+router.get('/blogs', (request: Request, response:Response) => {
     return blogController.getAllBlogs(request, response);
 });
 

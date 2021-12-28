@@ -15,3 +15,6 @@ export {BlogModel} from './blog/blog.model';
 
 // troll and its models
 export {TrollModel} from './troll/troll.model';
+
+// news and its models
+export {NewsModel} from './news/news.model';

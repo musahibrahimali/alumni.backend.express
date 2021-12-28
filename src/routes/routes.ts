@@ -5,3 +5,4 @@ export {default as jobRoutes} from './job.routes';
 export {default as blogRoutes} from './blog.routes';
 export {default as trollRoutes} from './troll.routes';
 export{default as adminRoutes} from './admin.routes';
+export{default as newsRoutes} from './news.routes';
