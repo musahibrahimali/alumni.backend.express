@@ -88,17 +88,21 @@ export class AdminController{
                         return response.status(200).send({data: "There was an error fetching user"});
                     }else{
                         const id: string = decodedToken.id;
-                        const _admin = await AdminModel.findOne({_id: id});
-                        const admin = {
-                            userId: _admin._id,
-                            email: _admin.email,
-                            displayName: _admin.displayName,
-                            firstName: _admin.firstName,
-                            lastName: _admin.lastName,
-                            phone: _admin.phone,
-                            image : _admin.image,
+                        if(id){
+                            const _admin = await AdminModel.findOne({_id: id});
+                            const admin = {
+                                userId: _admin._id,
+                                email: _admin.email,
+                                displayName: _admin.displayName,
+                                firstName: _admin.firstName,
+                                lastName: _admin.lastName,
+                                phone: _admin.phone,
+                                image : _admin.image,
+                            }
+                            return response.status(200).json({ admin: admin });
+                        }else{
+                            return response.status(401).json({message: "there was an error"});
                         }
-                        return response.status(200).json({ admin: admin });
                     }
                 });
             }

@@ -95,16 +95,20 @@ export class UserController{
                         return response.status(200).send({data: "There was an error fetching user"});
                     }else{
                         const id: string = decodedToken.id;
-                        const _user = await UserModel.findOne({_id: id});
-                        const data = {
-                            userId: _user._id,
-                            email: _user.email,
-                            displayName: _user.displayName,
-                            firstName: _user.firstName,
-                            lastName: _user.lastName,
-                            image : _user.image,
+                        if(id){
+                            const _user = await UserModel.findOne({_id: id});
+                            const data = {
+                                userId: _user._id,
+                                email: _user.email,
+                                displayName: _user.displayName,
+                                firstName: _user.firstName,
+                                lastName: _user.lastName,
+                                image : _user.image,
+                            }
+                            return response.status(200).json({ data: data });
+                        }else{
+                            return response.status(401).json({message: "There was an error"});
                         }
-                        return response.status(200).json({ data: data });
                     }
                 });
             }
