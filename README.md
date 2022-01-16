@@ -1,4 +1,4 @@
-# alumni.backend
+# alumni.backend.express
 
 This is the backend of the alumni project
 
